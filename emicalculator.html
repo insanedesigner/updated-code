@@ -1,0 +1,158 @@
+<link rel="stylesheet" href="../wp-content/themes/bootstrap-basic/emicalculator/emi-style.css">
+<body onload="EmiCalculator()">
+<center>
+	<!-- EMI Calculator -->
+    <div class="container-emicalculator">
+        <div class="container col-emi-1">
+            <div class="container-name">
+                <p class="input-tip">Loan Amount</p>
+            </div>
+            <div class="container-emi">
+                <div class="row">
+                    <div class="col-md-12 emi-col-1">
+                        <div class="col-md-8">
+                            <p class="emi-tip-left">1 lac</p>
+                            <p class="emi-tip-right">2 Cr</p>
+                        </div>
+                        <div class="col-md-8 col-range">
+                            <input type="range" id="plAmount" name="plAmount" required class="form-control" min="100000" max="20000000" value="100000" onchange="EmiCalculator(); drawChart()" />
+                        </div>
+                        <div class="col-md-4 col-xs-8 emi-col-2 col-input">
+                            <span class="input-append"><input type="text" name="" class="displayRange" id="pa" min="100000" max="20000000"  value="100000" onkeypress="EmiCalculator(); drawChart()" onchange="EmiCalculator() drawChart()" style="padding-right: 10px;" /><p style="margin: auto;">INR</p></span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container-name">
+                <p class="input-tip">Tenure </p>
+            </div>
+            <div class="container-emi">
+                <div class="row">
+                    <div class="col-md-12 emi-col-1">
+                        <div class="col-md-8">
+                            <p class="emi-tip-left">6 Months</p>
+                            <p class="emi-tip-right">36 Months</p>
+                        </div>
+                        <div class="col-md-8 col-range">
+                            <input type="range" id="emiMonth" name="emiMonth" required class="form-control" min="6" max="36" value="6" onkeypress="EmiCalculator(); drawChart()" onchange="EmiCalculator(); drawChart()" />
+                        </div>
+
+                        <div class="col-md-4 col-xs-8 emi-col-2 col-input">
+
+                            <span class="input-append"><input type="text" name="" class="displayRange" id="te" min="6" max="36" value="6" onkeypress="EmiCalculator(); drawChart()" onchange="EmiCalculator() drawChart()" style="padding-right: 10px;" /><p style="margin: auto;">Months</p></span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container-name">
+                <p class="input-tip">Interest Rate </p>
+            </div>
+            <div class="container-emi">
+                <div class="row">
+                    <div class="col-md-12 emi-col-1">
+                        <div class="col-md-8">
+                            <p class="emi-tip-left">1%</p>
+                            <p class="emi-tip-right">21%</p>
+                        </div>
+                        <div class="col-md-8 col-range">
+                            <input type="range" id="InterestRate" name="InterestRate" required class="form-control" min="1" max="21" step=".1" value="1" onchange="EmiCalculator(); drawChart()" />
+                        </div>
+                        <div class="col-md-4 col-xs-8 emi-col-2 col-input">
+                            <span class="input-append"><input type="text" name="" class="displayRange" id="in" min="1" max="21" value="1" step=".1" onkeypress="EmiCalculator(); drawChart()" onchange="EmiCalculator() drawChart()" style="padding-right: 10px;" /><p style="margin: auto;">%</p></span></div>
+                    </div>
+                </div>
+            </div>
+            <!-- EMI Result -->
+            <div class="container">
+                <div class="row">
+                    <div id="wrapper-data" class="col-md-12">
+
+                    	<!-- Chart -->
+                        <div class="col-me-6" id="chart_div"></div>
+                        <div class="col-md-6 emi-padding">
+                            <p class="emi-tool" style="color: #294E9B;">Principal Amount</p>
+                            <p id="principal" align="center" class="emi-data">Rs.100000 </p>
+                            <br>
+                            <p class="emi-tool" style="color: #FF7000;">Interest Amount</p>
+                            <span align="center" class="emi-data" style="display: flex;">Rs.<p id="totalInterest" align="center" class="emi-data">291.87 </p></span>
+                            <br>
+                            <p class="emi-tool" style="color: #303030;">Monthly EMI</p>
+                            <p id="result" align="center" class="emi-data">Rs.16715.31 </p>
+                        </div>
+                        <div class="col-md-12 total-amount">
+                            <p class="emi-tool col-emi-2">Total Amount Payable: </p>
+                            <p id="totalAmount" class="emi-data emi-tool col-emi-2">Rs.100291.87 </p>
+                        </div>
+                        </div>
+                        <div class="col-md-12">
+                        	<div class="">
+<a href="https://www.lendingkart.com/business-loan/check-eligibility?from=emi-calculator" class="btn btn-apply waves-effect waves-light apply-now-btn" role="button">
+<span class="apply-now-btn-txt">Apply Now</span>
+</span>
+</a>
+</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</center>
+
+<!-- Google Chart -->
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+    // Load the Visualization API and the corechart package.
+    google.charts.load('current', {
+        'packages': ['corechart']
+    });
+
+    // Set a callback to run when the Google Visualization API is loaded.
+    google.charts.setOnLoadCallback(drawChart);
+
+    // Callback that creates and populates a data table,
+    // instantiates the pie chart, passes in the data and
+    // draws it.
+    function drawChart() {
+        var pamtChart = parseInt(document.getElementById('plAmount').value);
+        var interestPara = document.getElementById('totalInterest').innerText;
+        var newChart = parseInt(interestPara);
+
+        // Create the data table.
+
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Topping');
+        data.addColumn('number', 'Slices');
+        data.addRows([
+            ['Principal amount', pamtChart],
+            ['Total interest amount', newChart]
+        ]);
+
+        // Set chart options
+        var options = {
+            'title': '',
+            'width': 300,
+            'height': 240, pieSliceText: 'none',
+            colors: ['#294E9B', '#FF7000'],
+            legend: {
+                position: 'none',
+            },
+            backgroundColor: {
+                fill: 'transparent'
+            },
+            'tooltip' : {
+  trigger: 'none'}
+        };
+
+        // Instantiate and draw our chart, passing in some options.
+        var oldChart = document.getElementById('chart_div');
+        oldChart.innerHTML = "";
+        var chart = new google.visualization.PieChart(oldChart);
+        chart.draw(data, options);
+    }
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/globalize/1.4.2/globalize.min.js"></script>
+<script src="../wp-content/themes/bootstrap-basic/emicalculator/emi-js.js"></script>
+</body>
